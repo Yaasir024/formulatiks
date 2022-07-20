@@ -2,8 +2,9 @@
 /*
 Imports
 */
-import { ref, reactive, watch } from "vue";
+import { ref, reactive, watch, computed } from "vue";
 import { lotionStore } from "@/stores/lotion";
+import { v4 as uuid } from "uuid";
 
 /*
 Use Lotion Store 
@@ -13,36 +14,94 @@ const lotionstore = lotionStore();
 /*
 Step 4 data
 */
-const search_query = ref("");
 const step4_data = reactive({
   oils: [
     {
-      id: 1,
-      product_Name: "Argan Oil",
+      id: 1234,
+      product_Name: "Selected Products",
+    },
+    {
+      id: 12345,
+      product_Name: "Selected Products",
     },
   ],
 });
-
 
 const dropdown_data = reactive({
   oils: {
     searchQuery: "",
     selectedItem: null,
-    current_dropdown: ''
-  }
-})
+    current_dropdown: null,
+  },
+});
 /*
 Products Data
 */
+/*
+OPEN OILS DROPDOWN FUNCTION
+*/
+const open_oils_dropdown = (id: any) => {
+  if (dropdown_data.oils.current_dropdown != id) {
+    dropdown_data.oils.current_dropdown = id;
+  } else {
+    dropdown_data.oils.current_dropdown = null;
+  }
+};
+const filtered_oils = computed(() => {
+  const query = ref(dropdown_data.oils.searchQuery.toLowerCase());
+  if (dropdown_data.oils.searchQuery === "") {
+    return products_data.oils;
+  }
+  return products_data.oils.filter((item) => {
+    return Object.values(item).some((word) =>
+      String(word).toLowerCase().includes(query.value)
+    );
+  });
+});
+
+const select_oil_option = (id:any, name:any) => {
+  console.log(id, name)
+  step4_data.oils.forEach((element, index) => {
+    if(element.id === id) {
+        element.product_Name = name;
+    }
+});
+dropdown_data.oils.current_dropdown = null;
+}
+
 const products_data = reactive({
   oils: [
     {
       id: 1,
-      product_Name: "Argan Oil",
+      product_name: "Argan Oil",
     },
     {
-      id: 1,
-      product_Name: "Shea Oil",
+      id: 2,
+      product_name: "BeezWax Oil",
+    },
+    {
+      id: 2,
+      product_name: "Coconut Oil",
+    },
+    {
+      id: 2,
+      product_name: "Demr Oil",
+    },
+    {
+      id: 2,
+      product_name: "Earnut Oil",
+    },
+    {
+      id: 2,
+      product_name: "Fennel Oil",
+    },
+    {
+      id: 2,
+      product_name: "Ginger Oil",
+    },
+    {
+      id: 2,
+      product_name: "Shea Oil",
     },
   ],
 });
@@ -91,27 +150,59 @@ const addNewProduct = () => {
                 :key="index"
               >
                 <div class="dropdown-input">
-                  <div class="selected-item">
-                    <span>Selected Product</span>
+                  <div
+                    class="selected-item"
+                    @click="open_oils_dropdown(product.id)"
+                  >
+                    <span>{{product.product_Name}}</span>
+                    <div class="arrow">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 384 512"
+                        width="16"
+                        height="16"
+                        stroke="currentColor"
+                        v-if="product.id != dropdown_data.oils.current_dropdown"
+                      >
+                        <path
+                          d="M352 352c-8.188 0-16.38-3.125-22.62-9.375L192 205.3l-137.4 137.4c-12.5 12.5-32.75 12.5-45.25 0s-12.5-32.75 0-45.25l160-160c12.5-12.5 32.75-12.5 45.25 0l160 160c12.5 12.5 12.5 32.75 0 45.25C368.4 348.9 360.2 352 352 352z"
+                        />
+                      </svg>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 384 512"
+                        width="16"
+                        height="16"
+                        stroke="currentColor"
+                        v-if="product.id == dropdown_data.oils.current_dropdown"
+                      >
+                        <path
+                          d="M192 384c-8.188 0-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L192 306.8l137.4-137.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-160 160C208.4 380.9 200.2 384 192 384z"
+                        />
+                      </svg>
+                    </div>
                   </div>
-                  <div class="dropdown-popup">
+                  <div
+                    class="dropdown-popup"
+                    v-if="product.id == dropdown_data.oils.current_dropdown"
+                  >
                     <div class="dropdown-content">
                       <input
                         type="text"
-                        v-model="search_query"
+                        v-model="dropdown_data.oils.searchQuery"
                         placeholder="Search For Oils"
                       />
-                      <div class="options">
-                      <ul>
-                        <li class="option">Argan Oil</li>
-                        <li class="option">BeezWax Oil</li>
-                        <li class="option">Coconut Oil</li>
-                        <li class="option">Demr Oil</li>
-                        <li class="option">Earnut Oil</li>
-                      </ul>
+                      <div
+                        class="options"
+                        v-for="(item, index) in filtered_oils"
+                        :key="index"
+                        @click="select_oil_option(product.id, item.product_name)"
+                      >
+                        <ul>
+                          <li class="option">{{ item.product_name }}</li>
+                        </ul>
+                      </div>
                     </div>
-                    </div>
-                    
                   </div>
                 </div>
                 <input
@@ -209,6 +300,9 @@ const addNewProduct = () => {
   font-size: 17px;
   cursor: pointer;
   transition: all 0.3s ease-in;
+}
+.sub-item .product-item .dropdown-input .selected-item {
+  color: var(--color-text);
 }
 .sub-item .dropdown-popup {
   position: absolute;
