@@ -6,6 +6,7 @@ import Toast from "@/components/lotion/Toast.vue";
 import Step1 from "@/components/lotion/Step1.vue";
 import Step2 from "@/components/lotion/Step2.vue";
 import Step3 from "@/components/lotion/Step3.vue";
+import Step4 from "@/components/lotion/Step4.vue";
 import Loading1 from "@/components/Loading1.vue";
 import { ref, reactive, watch } from "vue";
 import { lotionStore } from "@/stores/lotion";
@@ -25,6 +26,7 @@ const lotionstore = lotionStore();
     <Step1 v-if="lotionstore.current_step == 'step1'" />
     <Step2 v-if="lotionstore.current_step == 'step2'" />
     <Step3 v-if="lotionstore.current_step == 'step3'" />
+    <Step4 v-if="lotionstore.current_step == 'step4'" />
   </section>
 </template>
 

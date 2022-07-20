@@ -5,14 +5,18 @@ export const lotionStore = defineStore({
   state: () => ({
     loading: false,
     toast: false,
-    toast_message: "step2",
-    current_step: "step1",
+    toast_message: "",
+    current_step: "step4",
     phases: {
       water_phase: 0,
       oil_phase: 0,
       cooling_down_phase: 0,
     },
-    step3_data: {},
+    step3_data: {
+        oils: {
+            amount: 20
+        }
+    },
   }),
   getters: {
     // doubleCount: (state) => state.counter * 2
