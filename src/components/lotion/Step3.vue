@@ -692,7 +692,6 @@ const next_step3 = (step: any) => {
               type="number"
               class="phase-value"
               min="0"
-              max="100"
               readonly
               v-model="lotionstore.phases.cooling_down_phase"
             />
