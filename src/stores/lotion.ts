@@ -12,10 +12,13 @@ export const lotionStore = defineStore({
       oil_phase: 0,
       cooling_down_phase: 0,
     },
+    // step3_data: {
+    //     oils: {
+    //         amount: 20
+    //     }
+    // },
     step3_data: {
-        oils: {
-            amount: 20
-        }
+      oils: {}
     },
   }),
   getters: {
