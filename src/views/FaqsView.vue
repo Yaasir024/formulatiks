@@ -9,8 +9,8 @@ import Accordion from "../components/Accordion.vue";
 <template>
   <section>
     <header>
+        <h1>FAQs</h1>
       <h2>Have Questions?</h2>
-      <h1>FAQs</h1>
     </header>
     <Accordion />
   </section>
