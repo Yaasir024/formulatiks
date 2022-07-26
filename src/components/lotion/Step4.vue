@@ -490,6 +490,7 @@ const add_oil_product = () => {
     id: uuid(),
     product_Name: "",
     amount: 0,
+    total: 0,
   });
 };
 
@@ -499,6 +500,7 @@ const add_butter_product = () => {
     id: uuid(),
     product_Name: "",
     amount: 0,
+    total: 0,
   });
 };
 
@@ -509,6 +511,7 @@ const add_emulsifier_product = () => {
       id: uuid(),
       product_Name: "",
       amount: 0,
+      total: 0,
     });
   }
 };
@@ -520,6 +523,7 @@ const add_thickner_product = () => {
       id: uuid(),
       product_Name: "",
       amount: 0,
+      total: 0,
     });
   }
 };
@@ -530,6 +534,7 @@ const add_preservatives_product = () => {
     id: uuid(),
     product_Name: "",
     amount: 0,
+    total: 0,
   });
 };
 
@@ -539,6 +544,7 @@ const add_essential_oil_product = () => {
     id: uuid(),
     product_Name: "",
     amount: 0,
+    total: 0,
   });
 };
 
@@ -548,6 +554,7 @@ const add_fragrance_oil_product = () => {
     id: uuid(),
     product_Name: "",
     amount: 0,
+    total: 0,
   });
 };
 
@@ -557,6 +564,7 @@ const add_actives_product = () => {
     id: uuid(),
     product_Name: "",
     amount: 0,
+    total: 0,
   });
 };
 

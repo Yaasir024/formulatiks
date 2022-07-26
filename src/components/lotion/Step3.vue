@@ -16,50 +16,62 @@ const step3_data = reactive({
   distilled_water: {
     added: true,
     amount: 0,
+    total: 0
   },
   hydrosols: {
     added: true,
     amount: 0,
+    total: 0
   },
   aloe_juice: {
     added: true,
     amount: 0,
+    total: 0
   },
   oils: {
     added: true,
     amount: 0,
+    total: 0
   },
   butters: {
     added: true,
     amount: 0,
+    total: 0
   },
   emulsifier: {
     added: true,
     amount: 0,
+    total: 0
   },
   thickner: {
     added: true,
     amount: 0,
+    total: 0
   },
   preservatives: {
     added: true,
     amount: 0,
+    total: 0
   },
   essential_oil: {
     added: true,
     amount: 0,
+    total: 0
   },
   fragrance_oil: {
     added: true,
     amount: 0,
+    total: 0
   },
   actives: {
     added: true,
     amount: 0,
+    total: 0
   },
   tocopherol: {
     added: true,
     amount: 0,
+    total: 0
   },
 });
 const change_status = (item: any) => {

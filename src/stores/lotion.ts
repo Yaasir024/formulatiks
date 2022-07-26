@@ -6,7 +6,9 @@ export const lotionStore = defineStore({
     loading: false,
     toast: false,
     toast_message: "",
-    current_step: "result",
+    current_step: "step2",
+    total_quantity: 5000,
+    unit: 'g',
     phases: {
       water_phase: 0,
       oil_phase: 0,
@@ -82,6 +84,79 @@ export const lotionStore = defineStore({
       this.step4_data.actives = data.actives;
       console.log(data);
       this.change_step("result");
+    },
+
+    calculate() {
+      this.step3_data.distilled_water.total =
+        (this.step3_data.distilled_water.amount / 100) * this.total_quantity;
+      this.step3_data.hydrosols.total =
+        (this.step3_data.hydrosols.amount / 100) * this.total_quantity;
+      this.step3_data.aloe_juice.total =
+        (this.step3_data.aloe_juice.amount / 100) * this.total_quantity;
+      this.step3_data.oils.total =
+        (this.step3_data.oils.amount / 100) * this.total_quantity;
+      this.step3_data.butters.total =
+        (this.step3_data.butters.amount / 100) * this.total_quantity;
+      this.step3_data.emulsifier.total =
+        (this.step3_data.emulsifier.amount / 100) * this.total_quantity;
+      this.step3_data.thickner.total =
+        (this.step3_data.thickner.amount / 100) * this.total_quantity;
+      this.step3_data.preservatives.total =
+        (this.step3_data.preservatives.amount / 100) * this.total_quantity;
+      this.step3_data.essential_oil.total =
+        (this.step3_data.essential_oil.amount / 100) * this.total_quantity;
+      this.step3_data.fragrance_oil.total =
+        (this.step3_data.fragrance_oil.amount / 100) * this.total_quantity;
+      this.step3_data.actives.total =
+        (this.step3_data.actives.amount / 100) * this.total_quantity;
+      this.step3_data.tocopherol.total =
+        (this.step3_data.tocopherol.amount / 100) * this.total_quantity;
+
+      //STEP 4 DATA
+      //OILS
+      this.step4_data.oils.forEach((oil) => {
+        oil.total = (oil.amount / 100) * this.total_quantity;
+      });
+
+      //BUTTERS
+      this.step4_data.butters.forEach((butter) => {
+        butter.total = (butter.amount / 100) * this.total_quantity;
+      });
+
+      //EMULSIFIER
+      this.step4_data.emulsifier.forEach((emulsifier) => {
+        emulsifier.total = (emulsifier.amount / 100) * this.total_quantity;
+      });
+
+      //THICKNER
+      this.step4_data.thickner.forEach((thickner) => {
+        thickner.total = (thickner.amount / 100) * this.total_quantity;
+      });
+
+
+      //PRESERVATIVES
+      this.step4_data.preservatives.forEach((preservative) => {
+        preservative.total = (preservative.amount / 100) * this.total_quantity;
+      });
+
+
+      //ESSENTIAL OIL
+      this.step4_data.essential_oil.forEach((eo) => {
+        eo.total = (eo.amount / 100) * this.total_quantity;
+      });
+
+      //FRAGRANCE OIL
+      this.step4_data.fragrance_oil.forEach((fo) => {
+        fo.total = (fo.amount / 100) * this.total_quantity;
+      });
+
+
+      //ACTIVES
+      this.step4_data.actives.forEach((active) => {
+        active.total = (active.amount / 100) * this.total_quantity;
+      });
+
+      console.log(this.step3_data, this.step4_data)
     },
   },
 });
