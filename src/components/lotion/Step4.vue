@@ -14,12 +14,14 @@ import {
 } from "vue";
 import { useClickOutside } from "@/composables/useClickOutside";
 import { lotionStore } from "@/stores/lotion";
+import { productStore } from "@/stores/products";
 import { v4 as uuid } from "uuid";
 
 /*
 Use Lotion Store 
 */
 const lotionstore = lotionStore();
+const productstore = productStore();
 
 /*
 Step 4 data
@@ -166,9 +168,9 @@ FILTERED DATA FOR DROPDOWN
 const filtered_oils = computed(() => {
   const query = ref(dropdown_data.oils.searchQuery.toLowerCase());
   if (dropdown_data.oils.searchQuery === "") {
-    return products_data.oils;
+    return productstore.oils;
   }
-  return products_data.oils.filter((item) => {
+  return productstore.oils.filter((item) => {
     return Object.values(item).some((word: any) =>
       String(word).toLowerCase().includes(query.value)
     );
@@ -178,9 +180,9 @@ const filtered_oils = computed(() => {
 const filtered_butters = computed(() => {
   const query = ref(dropdown_data.butters.searchQuery.toLowerCase());
   if (dropdown_data.butters.searchQuery === "") {
-    return products_data.butters;
+    return productstore.butters;
   }
-  return products_data.butters.filter((item) => {
+  return productstore.butters.filter((item) => {
     return Object.values(item).some((word: any) =>
       String(word).toLowerCase().includes(query.value)
     );
@@ -190,9 +192,9 @@ const filtered_butters = computed(() => {
 const filtered_emulsifier = computed(() => {
   const query = ref(dropdown_data.emulsifier.searchQuery.toLowerCase());
   if (dropdown_data.emulsifier.searchQuery === "") {
-    return products_data.emulsifier;
+    return productstore.emulsifier;
   }
-  return products_data.emulsifier.filter((item) => {
+  return productstore.emulsifier.filter((item) => {
     return Object.values(item).some((word: any) =>
       String(word).toLowerCase().includes(query.value)
     );
@@ -202,9 +204,9 @@ const filtered_emulsifier = computed(() => {
 const filtered_thickner = computed(() => {
   const query = ref(dropdown_data.thickner.searchQuery.toLowerCase());
   if (dropdown_data.thickner.searchQuery === "") {
-    return products_data.thickner;
+    return productstore.thickner;
   }
-  return products_data.thickner.filter((item) => {
+  return productstore.thickner.filter((item) => {
     return Object.values(item).some((word: any) =>
       String(word).toLowerCase().includes(query.value)
     );
@@ -214,9 +216,9 @@ const filtered_thickner = computed(() => {
 const filtered_preservatives = computed(() => {
   const query = ref(dropdown_data.preservatives.searchQuery.toLowerCase());
   if (dropdown_data.preservatives.searchQuery === "") {
-    return products_data.preservatives;
+    return productstore.preservatives;
   }
-  return products_data.preservatives.filter((item) => {
+  return productstore.preservatives.filter((item) => {
     return Object.values(item).some((word: any) =>
       String(word).toLowerCase().includes(query.value)
     );
@@ -226,9 +228,9 @@ const filtered_preservatives = computed(() => {
 const filtered_essential_oil = computed(() => {
   const query = ref(dropdown_data.essential_oil.searchQuery.toLowerCase());
   if (dropdown_data.essential_oil.searchQuery === "") {
-    return products_data.essential_oil;
+    return productstore.essential_oil;
   }
-  return products_data.essential_oil.filter((item) => {
+  return productstore.essential_oil.filter((item) => {
     return Object.values(item).some((word: any) =>
       String(word).toLowerCase().includes(query.value)
     );
@@ -238,9 +240,9 @@ const filtered_essential_oil = computed(() => {
 const filtered_fragrance_oil = computed(() => {
   const query = ref(dropdown_data.fragrance_oil.searchQuery.toLowerCase());
   if (dropdown_data.fragrance_oil.searchQuery === "") {
-    return products_data.fragrance_oil;
+    return productstore.fragrance_oil;
   }
-  return products_data.fragrance_oil.filter((item) => {
+  return productstore.fragrance_oil.filter((item) => {
     return Object.values(item).some((word: any) =>
       String(word).toLowerCase().includes(query.value)
     );
@@ -250,9 +252,9 @@ const filtered_fragrance_oil = computed(() => {
 const filtered_actives = computed(() => {
   const query = ref(dropdown_data.actives.searchQuery.toLowerCase());
   if (dropdown_data.actives.searchQuery === "") {
-    return products_data.actives;
+    return productstore.actives;
   }
-  return products_data.actives.filter((item) => {
+  return productstore.actives.filter((item) => {
     return Object.values(item).some((word: any) =>
       String(word).toLowerCase().includes(query.value)
     );
@@ -502,13 +504,13 @@ const add_butter_product = () => {
 
 //EMULSIFIER
 const add_emulsifier_product = () => {
-   if (step4_data.emulsifier.length != 1) {
-  step4_data.emulsifier.push({
-    id: uuid(),
-    product_Name: "",
-    amount: 0,
-  });
-   }
+  if (step4_data.emulsifier.length != 1) {
+    step4_data.emulsifier.push({
+      id: uuid(),
+      product_Name: "",
+      amount: 0,
+    });
+  }
 };
 
 //THICKNER
@@ -785,9 +787,265 @@ useClickOutside(dropdown_actives, () => {
   toggle_actives_dropdown(null);
 });
 
+const check_item_name = (item: any) => {
+  if (item.length > 0) {
+    for (let i of item) {
+      //Looping Through
+      if (i.product_Name == "") {
+        return true;
+      }
+    }
+  } else {
+    return false;
+  }
+};
+const check_item_amount = (item: any) => {
+  if (item.length > 0) {
+    for (let i of item) {
+      //Looping Through
+      if (i.amount == 0) {
+        return true;
+      }
+    }
+  } else {
+    return false;
+  }
+};
+
+
 const next_step4 = () => {
-  console.log('NEXT', step4_data)
-}
+  //OILS
+  if (lotionstore.step3_data.oils.added && step4_data.oils.length == 0) {
+    //If not Chosen
+    lotionstore.toast_message = "Sorry, You Must Select At Least One Oil";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (
+    step4_data.oils.length != 0 &&
+    total_data.oils != lotionstore.step3_data.oils.amount
+  ) {
+    //If chosen
+    lotionstore.toast_message =
+      "Total Value Oils should be Equal to " +
+      lotionstore.step3_data.oils.amount +
+      "%";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_name(step4_data.oils)) {
+    lotionstore.toast_message = "Sorry, All Selected Oil Must be Named";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_amount(step4_data.oils)) {
+    lotionstore.toast_message =
+      "Sorry, All Selected Oils Must Have a Positive Value";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  }
+
+  //BUTTERS
+  else if (lotionstore.step3_data.butters.added && step4_data.butters.length == 0) {
+    //If not Chosen
+    lotionstore.toast_message = "Sorry, You Must Select At Least One Butter";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (
+    step4_data.butters.length != 0 &&
+    total_data.butters != lotionstore.step3_data.butters.amount
+  ) {
+    //If the Total is not equal to The Overall Value
+    lotionstore.toast_message =
+      "Total Value of Butters should be Equal to " +
+      lotionstore.step3_data.butters.amount +
+      "%";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_name(step4_data.butters)) {
+    lotionstore.toast_message = "Sorry, All Selected Butter Must be Named";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_amount(step4_data.butters)) {
+    lotionstore.toast_message =
+      "Sorry, All Selected Butter Must Have a Positive Value";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  }
+
+  //EMULSIFIER
+  else if (lotionstore.step3_data.emulsifier.added && step4_data.emulsifier.length == 0) {
+    //If not Chosen
+    lotionstore.toast_message = "Sorry, You Must Select An Emulsifier";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (
+    step4_data.emulsifier.length != 0 &&
+    total_data.emulsifier != lotionstore.step3_data.emulsifier.amount
+  ) {
+    //If the Total is not equal to The Overall Value
+    lotionstore.toast_message =
+      "Total Value of Emulsifier should be Equal to " +
+      lotionstore.step3_data.emulsifier.amount +
+      "%";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_name(step4_data.emulsifier)) {
+    lotionstore.toast_message = "Sorry, All Selected Emulsifier Must be Named";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_amount(step4_data.emulsifier)) {
+    lotionstore.toast_message =
+      "Sorry, All Selected Emulsifier Must Have a Positive Value";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  }
+
+  //THICKNER
+  else if (lotionstore.step3_data.thickner.added && step4_data.thickner.length == 0) {
+    //If not Chosen
+    lotionstore.toast_message = "Sorry, You Must Select A Thickner";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (
+    step4_data.thickner.length != 0 &&
+    total_data.thickner != lotionstore.step3_data.thickner.amount
+  ) {
+    //If the Total is not equal to The Overall Value
+    lotionstore.toast_message =
+      "Total Value of Thickner should be Equal to " +
+      lotionstore.step3_data.thickner.amount +
+      "%";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_name(step4_data.thickner)) {
+    lotionstore.toast_message = "Sorry, All Selected Thickner Must be Named";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_amount(step4_data.thickner)) {
+    lotionstore.toast_message =
+      "Sorry, All Selected Thickner Must Have a Positive Value";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  }
+
+  //PRESERVATIVES
+  else if (step4_data.preservatives.length == 0) {
+    //If not Chosen
+    lotionstore.toast_message =
+      "Sorry, You Must Select At Least One Preservative";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (
+    step4_data.preservatives.length != 0 &&
+    total_data.preservatives != lotionstore.step3_data.preservatives.amount
+  ) {
+    //If the Total is not equal to The Overall Value
+    lotionstore.toast_message =
+      "Total Value of Preservatives should be Equal to " +
+      lotionstore.step3_data.preservatives.amount +
+      "%";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_name(step4_data.preservatives)) {
+    lotionstore.toast_message =
+      "Sorry, All Selected Preservatives Must be Named";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_amount(step4_data.preservatives)) {
+    lotionstore.toast_message =
+      "Sorry, All Selected Preservatives Must Have a Positive Value";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  }
+
+  //ESSENTIAL OIL
+  else if (lotionstore.step3_data.essential_oil.added && step4_data.essential_oil.length == 0) {
+    //If not Chosen
+    lotionstore.toast_message =
+      "Sorry, You Must Select At Least One Essential Oil";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (
+    step4_data.essential_oil.length != 0 &&
+    total_data.essential_oil != lotionstore.step3_data.essential_oil.amount
+  ) {
+    //If the Total is not equal to The Overall Value
+    lotionstore.toast_message =
+      "Total Value of Essential Oils should be Equal to " +
+      lotionstore.step3_data.essential_oil.amount +
+      "%";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_name(step4_data.essential_oil)) {
+    lotionstore.toast_message =
+      "Sorry, All Selected Essential Oils Must be Named";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_amount(step4_data.essential_oil)) {
+    lotionstore.toast_message =
+      "Sorry, All Selected Essential Oils Must Have a Positive Value";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  }
+
+  //FRAGRANCE OIL
+  else if (lotionstore.step3_data.fragrance_oil.added && step4_data.fragrance_oil.length == 0) {
+    //If not Chosen
+    lotionstore.toast_message =
+      "Sorry, You Must Select At Least One Fragrance Oil";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (
+    step4_data.fragrance_oil.length != 0 &&
+    total_data.fragrance_oil != lotionstore.step3_data.fragrance_oil.amount
+  ) {
+    //If the Total is not equal to The Overall Value
+    lotionstore.toast_message =
+      "Total Value of Fragrance Oils should be Equal to " +
+      lotionstore.step3_data.fragrance_oil.amount +
+      "%";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_name(step4_data.fragrance_oil)) {
+    lotionstore.toast_message =
+      "Sorry, All Selected Fragrance Oils Must be Named";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_amount(step4_data.fragrance_oil)) {
+    lotionstore.toast_message =
+      "Sorry, All Selected Fragrance Oils Must Have a Positive Value";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  }
+
+  //ACTIVES
+  else if (lotionstore.step3_data.actives.added && step4_data.actives.length == 0) {
+    //If not Chosen
+    lotionstore.toast_message = "Sorry, You Must Select At Least One Active";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (
+    step4_data.actives.length != 0 &&
+    total_data.actives != lotionstore.step3_data.actives.amount
+  ) {
+    //If the Total is not equal to The Overall Value
+    lotionstore.toast_message =
+      "Total Value of Actives should be Equal to " +
+      lotionstore.step3_data.actives.amount +
+      "%";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_name(step4_data.actives)) {
+    lotionstore.toast_message = "Sorry, All Selected Actives Must be Named";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else if (check_item_amount(step4_data.actives)) {
+    lotionstore.toast_message =
+      "Sorry, All Selected Actives Must Have a Positive Value";
+    lotionstore.toast = true;
+    setTimeout(() => (lotionstore.toast = false), 3000);
+  } else {
+    lotionstore.next_step4(step4_data)
+  }
+};
 </script>
 
 <template>
@@ -1280,6 +1538,7 @@ const next_step4 = () => {
                   id="quantity"
                   min="0"
                   :max="`${lotionstore.step3_data.emulsifier}`"
+                  required
                   v-model="product.amount"
                 />
               </div>
@@ -1290,8 +1549,10 @@ const next_step4 = () => {
                 <p>Total: {{ total_data.emulsifier }}%</p>
               </div>
 
-              <div class="add-btn-container"
-              v-if="step4_data.emulsifier.length != 1">
+              <div
+                class="add-btn-container"
+                v-if="step4_data.emulsifier.length != 1"
+              >
                 <button class="add-btn" @click="add_emulsifier_product">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -2128,7 +2389,9 @@ const next_step4 = () => {
       </div>
     </main>
     <div class="btn-container">
-      <button class="btn" @click="lotionstore.change_step('step3')">Back</button>
+      <button class="btn" @click="lotionstore.change_step('step3')">
+        Back
+      </button>
       <button class="btn" @click="next_step4()">Calculate</button>
     </div>
   </section>

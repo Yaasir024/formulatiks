@@ -7,6 +7,7 @@ import Step1 from "@/components/lotion/Step1.vue";
 import Step2 from "@/components/lotion/Step2.vue";
 import Step3 from "@/components/lotion/Step3.vue";
 import Step4 from "@/components/lotion/Step4.vue";
+import Result from "@/components/lotion/Result.vue";
 import Loading1 from "@/components/Loading1.vue";
 import { ref, reactive, watch } from "vue";
 import { lotionStore } from "@/stores/lotion";
@@ -18,7 +19,7 @@ const lotionstore = lotionStore();
 </script>
 
 <template>
-  <Loading1 v-if="lotionstore.loading"/>
+  <Loading1 v-if="lotionstore.loading" />
   <transition name="toast">
     <Toast v-if="lotionstore.toast" />
   </transition>
@@ -27,10 +28,14 @@ const lotionstore = lotionStore();
     <Step2 v-if="lotionstore.current_step == 'step2'" />
     <Step3 v-if="lotionstore.current_step == 'step3'" />
     <Step4 v-if="lotionstore.current_step == 'step4'" />
+    <Result v-if="lotionstore.current_step == 'result'" />
   </section>
 </template>
 
 <style>
+form {
+  font-size: 17px;
+}
 /* Styling Inputs */
 .lotion-section {
   padding: 40px 20px;
@@ -112,8 +117,6 @@ header .sub-heading p {
   line-height: 1.8;
   font-weight: 500;
 }
-
-
 
 .btn-container {
   display: flex;
