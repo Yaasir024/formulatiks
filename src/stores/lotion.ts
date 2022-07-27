@@ -1,4 +1,10 @@
 import { defineStore } from "pinia";
+import { userStore } from "@/stores/user";
+
+/*
+Use Lotion Store 
+*/
+
 
 export const lotionStore = defineStore({
   id: "lotion",
@@ -44,11 +50,13 @@ export const lotionStore = defineStore({
   },
   actions: {
     change_step(step: any) {
+      
       this.loading = true;
       setTimeout(
         () => ((this.loading = false), (this.current_step = step)),
         3000
       );
+      
     },
     next_step2(step: any, phases: any) {
       this.phases.water_phase = phases.water_phase;
@@ -58,6 +66,7 @@ export const lotionStore = defineStore({
       this.change_step(step);
     },
     next_step3(step3_data: any) {
+      const userstore = userStore();
       this.step3_data.distilled_water = step3_data.distilled_water;
       this.step3_data.hydrosols = step3_data.hydrosols;
       this.step3_data.aloe_juice = step3_data.aloe_juice;
@@ -70,8 +79,15 @@ export const lotionStore = defineStore({
       this.step3_data.fragrance_oil = step3_data.fragrance_oil;
       this.step3_data.actives = step3_data.actives;
       this.step3_data.tocopherol = step3_data.tocopherol;
-      console.log(this.step3_data);
-      this.change_step("step4");
+      
+
+      if(userstore.plan == 'free') {
+        this.change_step("result-free");
+      }else {
+        this.change_step("step4");
+      }
+
+      console.log(userstore.plan)
     },
     next_step4(data: any) {
       this.step4_data.oils = data.oils;
@@ -83,7 +99,7 @@ export const lotionStore = defineStore({
       this.step4_data.fragrance_oil = data.fragrance_oil;
       this.step4_data.actives = data.actives;
       console.log(data);
-      this.change_step("result");
+      this.change_step("result-pro");
     },
 
     calculate() {
@@ -158,5 +174,31 @@ export const lotionStore = defineStore({
 
       console.log(this.step3_data, this.step4_data)
     },
+    calculate_free() {
+      this.step3_data.distilled_water.total =
+        ((this.step3_data.distilled_water.amount / 100) * this.total_quantity).toFixed(2);
+      this.step3_data.hydrosols.total =
+        ((this.step3_data.hydrosols.amount / 100) * this.total_quantity).toFixed(2);
+      this.step3_data.aloe_juice.total =
+        ((this.step3_data.aloe_juice.amount / 100) * this.total_quantity).toFixed(2);
+      this.step3_data.oils.total =
+        ((this.step3_data.oils.amount / 100) * this.total_quantity).toFixed(2);
+      this.step3_data.butters.total =
+        ((this.step3_data.butters.amount / 100) * this.total_quantity).toFixed(2);
+      this.step3_data.emulsifier.total =
+        ((this.step3_data.emulsifier.amount / 100) * this.total_quantity).toFixed(2);
+      this.step3_data.thickner.total =
+        ((this.step3_data.thickner.amount / 100) * this.total_quantity).toFixed(2);
+      this.step3_data.preservatives.total =
+        ((this.step3_data.preservatives.amount / 100) * this.total_quantity).toFixed(2);
+      this.step3_data.essential_oil.total =
+        ((this.step3_data.essential_oil.amount / 100) * this.total_quantity).toFixed(2);
+      this.step3_data.fragrance_oil.total =
+        ((this.step3_data.fragrance_oil.amount / 100) * this.total_quantity).toFixed(2);
+      this.step3_data.actives.total =
+        ((this.step3_data.actives.amount / 100) * this.total_quantity).toFixed(2);
+      this.step3_data.tocopherol.total =
+        ((this.step3_data.tocopherol.amount / 100) * this.total_quantity).toFixed(2);
+    }
   },
 });
