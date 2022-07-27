@@ -13,6 +13,13 @@ const lotionstore = lotionStore();
 onMounted(() => {
   lotionstore.calculate();
 });
+
+/*
+Print Functionality
+*/
+const print = () => {
+  window.print()
+}
 </script>
 
 <template>
@@ -21,12 +28,14 @@ onMounted(() => {
       <h1>RESULTS</h1>
       <div class="sub-heading">
         <p>
-          A Lotion, measured in Grams with Water Phase of {{lotionstore.phases.water_phase}}%, Oil Phase of {{lotionstore.phases.oil_phase}}%
-          and Cooling Down Phase of {{lotionstore.phases.cooling_down_phase}}%
+          A Lotion, measured in Grams with Water Phase of
+          {{ lotionstore.phases.water_phase }}%, Oil Phase of
+          {{ lotionstore.phases.oil_phase }}% and Cooling Down Phase of
+          {{ lotionstore.phases.cooling_down_phase }}%
         </p>
       </div>
     </header>
-    <main>
+    <main class="print-container">
       <div class="phase water-phase">
         <div class="phase-content">
           <table>
@@ -116,7 +125,10 @@ onMounted(() => {
                   {{ lotionstore.step3_data.oils.amount }}%
                 </td>
               </tr>
-              <tr class="phases-item" v-if="lotionstore.step3_data.butters.added">
+              <tr
+                class="phases-item"
+                v-if="lotionstore.step3_data.butters.added"
+              >
                 <td class="textalign-left title">Butters</td>
                 <td class="amount"></td>
                 <td class="percent"></td>
@@ -142,7 +154,10 @@ onMounted(() => {
                   {{ lotionstore.step3_data.butters.amount }}%
                 </td>
               </tr>
-              <tr class="phases-item" v-if="lotionstore.step3_data.emulsifier.added">
+              <tr
+                class="phases-item"
+                v-if="lotionstore.step3_data.emulsifier.added"
+              >
                 <td class="textalign-left title">Emulsifier</td>
                 <td class="amount"></td>
                 <td class="percent"></td>
@@ -170,7 +185,10 @@ onMounted(() => {
                   {{ lotionstore.step3_data.emulsifier.amount }}%
                 </td>
               </tr>
-              <tr class="phases-item" v-if="lotionstore.step3_data.thickner.added">
+              <tr
+                class="phases-item"
+                v-if="lotionstore.step3_data.thickner.added"
+              >
                 <td class="textalign-left title">Thickner</td>
                 <td class="amount"></td>
                 <td class="percent"></td>
@@ -214,7 +232,10 @@ onMounted(() => {
               </tr>
             </thead>
             <tbody>
-              <tr class="phases-item" v-if="lotionstore.step3_data.preservatives.added">
+              <tr
+                class="phases-item"
+                v-if="lotionstore.step3_data.preservatives.added"
+              >
                 <td class="textalign-left title">Preservatives</td>
                 <td class="amount"></td>
                 <td class="percent"></td>
@@ -242,7 +263,10 @@ onMounted(() => {
                   {{ lotionstore.step3_data.preservatives.amount }}%
                 </td>
               </tr>
-              <tr class="phases-item" v-if="lotionstore.step3_data.essential_oil.added">
+              <tr
+                class="phases-item"
+                v-if="lotionstore.step3_data.essential_oil.added"
+              >
                 <td class="textalign-left title">Essential Oil</td>
                 <td class="amount"></td>
                 <td class="percent"></td>
@@ -266,7 +290,10 @@ onMounted(() => {
                   {{ lotionstore.step3_data.essential_oil.amount }}%
                 </td>
               </tr>
-              <tr class="phases-item" v-if="lotionstore.step3_data.fragrance_oil.added">
+              <tr
+                class="phases-item"
+                v-if="lotionstore.step3_data.fragrance_oil.added"
+              >
                 <td class="textalign-left title">Fragrance Oil</td>
                 <td class="amount"></td>
                 <td class="percent"></td>
@@ -292,7 +319,10 @@ onMounted(() => {
                   {{ lotionstore.step3_data.fragrance_oil.amount }}%
                 </td>
               </tr>
-              <tr class="phases-item" v-if="lotionstore.step3_data.actives.added">
+              <tr
+                class="phases-item"
+                v-if="lotionstore.step3_data.actives.added"
+              >
                 <td class="textalign-left title">Actives</td>
                 <td class="amount"></td>
                 <td class="percent"></td>
@@ -320,7 +350,10 @@ onMounted(() => {
                   {{ lotionstore.step3_data.actives.amount }}%
                 </td>
               </tr>
-              <tr class="phases-item" v-if="lotionstore.step3_data.tocopherol.added">
+              <tr
+                class="phases-item"
+                v-if="lotionstore.step3_data.tocopherol.added"
+              >
                 <td class="textalign-left title">Tocopherol/Vitamin E</td>
                 <td class="amount">
                   {{ lotionstore.step3_data.tocopherol.total }}
@@ -335,6 +368,27 @@ onMounted(() => {
         </div>
       </div>
     </main>
+    <div class="buttons-section">
+      <div class="back-btn">
+        Back To Calculator
+      </div>
+      <div class="print">
+        <div class="print-btn" @click="print">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+            width="22"
+            height="22"
+            fill="currentColor"
+          >
+            <path
+              d="M448 192H64C28.65 192 0 220.7 0 256v96c0 17.67 14.33 32 32 32h32v96c0 17.67 14.33 32 32 32h320c17.67 0 32-14.33 32-32v-96h32c17.67 0 32-14.33 32-32V256C512 220.7 483.3 192 448 192zM384 448H128v-96h256V448zM432 296c-13.25 0-24-10.75-24-24c0-13.27 10.75-24 24-24s24 10.73 24 24C456 285.3 445.3 296 432 296zM128 64h229.5L384 90.51V160h64V77.25c0-8.484-3.375-16.62-9.375-22.62l-45.25-45.25C387.4 3.375 379.2 0 370.8 0H96C78.34 0 64 14.33 64 32v128h64V64z"
+            />
+          </svg>
+          <span>PRINT</span>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -388,5 +442,53 @@ tbody td {
 /* WATER PHASE */
 .water-phase thead {
   background: #d8d8d8;
+}
+
+.back-btn {
+  width: 90%;
+  margin: 5px auto;
+  text-align: center;
+  /* height: 40px; */
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid var(--color-green);
+  border-radius: 6px;
+}
+
+.print {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.print .print-btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.print span {
+  font-weight: 600;
+  font-size: 16px;
+  margin-left: 8px;
+}
+
+@media print {
+  /* Hide every other element */
+  body * {
+    visibility: hidden;
+  }
+  /* Showing Print container */
+  .print-container,
+  .print-container * {
+    visibility: visible;
+  }
+
+  .print-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 }
 </style>
