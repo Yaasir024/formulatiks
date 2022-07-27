@@ -1,11 +1,14 @@
 <template>
   <nav>
     <div class="left-side">
-      <div class="logo">F</div>
+      <div class="logo">
+        <img src="../assets/icon.png" alt="">
+      </div>
       <div class="links">
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/calculator">Calculator</RouterLink>
         <RouterLink to="/faqs">FAQs</RouterLink>
+        <RouterLink to="/contact-us">Contact Us</RouterLink>
       </div>
     </div>
     <div class="right-side">
@@ -67,6 +70,14 @@ nav a {
   display: flex;
   align-items: center;
 }
+.left-side .logo {
+  margin-right: 10px;
+  height: 35px;
+  width: 35px;
+}
+.left-side .logo img {
+  width: 100%;
+}
 .right-side {
   display: flex;
   align-items: center;
@@ -77,6 +88,7 @@ nav a {
   justify-content: center;
   margin-right: 15px;
   cursor: pointer;
+  position: relative;
 }
 .question {
   display: flex;
@@ -84,5 +96,7 @@ nav a {
   justify-content: center;
   margin-right: 10px;
   cursor: pointer;
+  position: relative;
 }
+
 </style>
