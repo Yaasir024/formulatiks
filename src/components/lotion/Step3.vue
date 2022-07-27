@@ -4,10 +4,13 @@ Imports
 */
 import { ref, reactive, watch } from "vue";
 import { lotionStore } from "@/stores/lotion";
+import { userStore } from "@/stores/user";
 /*
-Use Lotion Store 
+Use Store 
 */
 const lotionstore = lotionStore();
+const userstore = userStore();
+
 
 /*
 STEP THREE(3)
@@ -194,7 +197,10 @@ watch(total_left_step3, () => {
     total_left_step3.cooling_down_phase = 0;
   }
 });
-const next_step3 = (step: any) => {
+
+
+//NEXT STEP FUNCYIONALITY
+const next_step3 = () => {
   lotionstore.toast_message = "";
   lotionstore.toast = false;
   if (
@@ -949,7 +955,8 @@ const next_step3 = (step: any) => {
     </main>
     <div class="btn-container">
       <button class="btn" @click="lotionstore.change_step('step2')">Back</button>
-      <button class="btn" @click="next_step3('calc')">Calculate</button>
+      <button class="btn" @click="next_step3()" v-if="userstore.plan == 'free'">Calculate</button>
+      <button class="btn" @click="next_step3()" v-else>Next</button>
     </div>
   </section>
 </template>

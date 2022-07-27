@@ -5,8 +5,12 @@
       <hr />
     </header>
     <ul class="calculator-links">
-      <li class="calc-link">LOTION calculator</li>
-      <li class="calc-link">CREAM</li>
+      <div class="link">
+        <div class="link-btn">LOTION</div>
+      </div>
+      <div class="link">
+        <div class="link-btn">CREAM</div>
+      </div>
     </ul>
   </section>
 </template>
@@ -30,7 +34,8 @@
 }
 .calculator-links {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
   list-style: none;
   padding: 0 15px;
 }
@@ -45,5 +50,21 @@
   border-bottom: 2px solid #ccc;
   text-transform: uppercase;
   /* background: var(--color-green); */
+}
+.link {
+  flex-basis: 50%;
+  max-width: 50%;
+  padding: 0 10px;
+}
+
+.link-btn {
+  background: #fff;
+  padding: 10px 20px;
+  box-shadow: 0 0.25em 0 #c3c6d1;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 500;
 }
 </style>
