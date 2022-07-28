@@ -8,6 +8,7 @@
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/calculator">Calculator</RouterLink>
         <RouterLink to="/faqs">FAQs</RouterLink>
+        <RouterLink to="/plans">Plans</RouterLink>
         <RouterLink to="/contact-us">Contact Us</RouterLink>
       </div>
     </div>

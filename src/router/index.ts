@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import Lotion from "../views/Lotion.vue";
 import Faqs from "../views/FaqsView.vue";
 import Contact from "../views/ContactView.vue";
+import Plans from "../views/PlansView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,11 @@ const router = createRouter({
       path: "/contact-us",
       name: "contact-us",
       component: Contact,
+    },
+    {
+      path: "/plans",
+      name: "plans",
+      component: Plans,
     },
   ],
 });
