@@ -4,6 +4,7 @@ import Lotion from "../views/Lotion.vue";
 import Faqs from "../views/FaqsView.vue";
 import Contact from "../views/ContactView.vue";
 import Plans from "../views/PlansView.vue";
+import Login from "../views/LoginView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,6 +49,11 @@ const router = createRouter({
       path: "/plans",
       name: "plans",
       component: Plans,
+    },
+    {
+      path: "/account/login",
+      name: "login",
+      component: Login,
     },
   ],
 });
